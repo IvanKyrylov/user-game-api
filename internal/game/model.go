@@ -6,5 +6,5 @@ type Game struct {
 	WinStatus    string `json:"win_status,omitempty" bson:"win_status,omitempty"`
 	GameType     string `json:"game_type,omitempty" bson:"game_type,omitempty"`
 	Created      string `json:"created,omitempty" bson:"created,omitempty"`
-	// UserUUID     string `json:"user_uuid,omitempty" bson:"user_uuid,omitempty"`
+	UserUUID     string `json:"user_uuid,omitempty" bson:"user_uuid,omitempty"`
 }
