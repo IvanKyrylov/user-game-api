@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	usersURL = "/api/users"
-	userURL  = "/api/user/"
+	usersURL   = "/api/users"
+	userURL    = "/api/user/"
+	userRating = "/api/users-rating"
 )
 
 type Handler struct {
@@ -21,8 +22,10 @@ type Handler struct {
 
 func (h *Handler) Register(router *http.ServeMux) {
 	router.HandleFunc(userURL, apperror.Middleware(h.GetUser))
-	// router.HandleFunc(userURL, apperror.Middleware(h.GetUserByName))
 	router.HandleFunc(usersURL, apperror.Middleware(h.GetAllUsers))
+	router.HandleFunc(userRating, apperror.Middleware(h.GetUsersRaing))
+
+	// router.HandleFunc(userURL, apperror.Middleware(h.GetUserByName))
 }
 
 func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) error {
@@ -53,33 +56,33 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (h *Handler) GetUserByName(w http.ResponseWriter, r *http.Request) error {
-	if r.Method != http.MethodGet {
-		return apperror.BadRequestError("metod GET")
-	}
-	h.Logger.Println("GET USER BY NAME")
-	w.Header().Set("Content-Type", "application/json")
+// func (h *Handler) GetUserByName(w http.ResponseWriter, r *http.Request) error {
+// 	if r.Method != http.MethodGet {
+// 		return apperror.BadRequestError("metod GET")
+// 	}
+// 	h.Logger.Println("GET USER BY NAME")
+// 	w.Header().Set("Content-Type", "application/json")
 
-	h.Logger.Println("get name from URL")
-	uuid := r.URL.Query().Get("name")
-	if uuid == "" {
-		return apperror.BadRequestError("uuid query parameter is required and must be a comma separated integers")
-	}
+// 	h.Logger.Println("get name from URL")
+// 	uuid := r.URL.Query().Get("name")
+// 	if uuid == "" {
+// 		return apperror.BadRequestError("uuid query parameter is required and must be a comma separated integers")
+// 	}
 
-	user, err := h.UserService.GetByName(r.Context(), uuid)
-	if err != nil {
-		return err
-	}
+// 	user, err := h.UserService.GetByName(r.Context(), uuid)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	userBytes, err := json.Marshal(user)
-	if err != nil {
-		return err
-	}
+// 	userBytes, err := json.Marshal(user)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write(userBytes)
-	return nil
-}
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Write(userBytes)
+// 	return nil
+// }
 
 func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodGet {
@@ -113,5 +116,41 @@ func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) error {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(usersBytes)
+	return nil
+}
+
+func (h *Handler) GetUsersRaing(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return apperror.BadRequestError("metod GET")
+	}
+
+	h.Logger.Println("GET ALL GAMES")
+	w.Header().Set("Content-Type", "application/json")
+
+	h.Logger.Println("get limit from URL")
+	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
+	if err != nil || limit < 0 {
+		return apperror.BadRequestError("limit query parameter is required positive integers")
+	}
+
+	h.Logger.Println("get limit from URL")
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 0 {
+		return apperror.BadRequestError("page query parameter is required positive integers")
+	}
+
+	games, err := h.UserService.GetUsersRating(r.Context(), int64(limit), int64(page))
+	if err != nil {
+		return err
+	}
+
+	gamesBytes, err := json.Marshal(games)
+	if err != nil {
+		return err
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(gamesBytes)
+
 	return nil
 }

@@ -15,6 +15,7 @@ type Service interface {
 	GetById(ctx context.Context, uuid string) (User, error)
 	GetByName(ctx context.Context, lastName string) (User, error)
 	GetAll(ctx context.Context, limit, page int64) ([]User, error)
+	GetUsersRating(ctx context.Context, limit, page int64) ([]UserRating, error)
 }
 
 type service struct {
@@ -63,4 +64,18 @@ func (s service) GetAll(ctx context.Context, limit, page int64) (users []User, e
 		return users, apperror.ErrNotFound
 	}
 	return users, nil
+}
+
+func (s service) GetUsersRating(ctx context.Context, limit, page int64) (usersRatings []UserRating, err error) {
+	usersRatings, err = s.storage.AggregateRatingUsers(ctx, limit, page)
+	if err != nil {
+		if errors.Is(err, apperror.ErrNotFound) {
+			return usersRatings, err
+		}
+		return usersRatings, fmt.Errorf("failed to get statistics games. error: %w", err)
+	}
+	if len(usersRatings) == 0 {
+		return usersRatings, apperror.ErrNotFound
+	}
+	return usersRatings, nil
 }

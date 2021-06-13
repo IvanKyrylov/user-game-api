@@ -75,13 +75,7 @@ func (s *db) FindByName(ctx context.Context, lastName string) (user user.User, e
 
 func (s *db) FindAll(ctx context.Context, limit, page int64) (users []user.User, err error) {
 
-	skip := page * limit
-	opt := options.FindOptions{
-		Limit: &limit,
-		Skip:  &skip,
-	}
-
-	cur, err := s.collection.Find(ctx, bson.D{}, &opt)
+	cur, err := s.collection.Find(ctx, bson.M{}, options.Find().SetLimit(limit).SetSkip(page*limit))
 
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
@@ -94,4 +88,79 @@ func (s *db) FindAll(ctx context.Context, limit, page int64) (users []user.User,
 		return users, nil
 	}
 	return users, fmt.Errorf("failed to decode document. error: %w", err)
+}
+
+func (s *db) AggregateRatingUsers(ctx context.Context, limit, page int64) (usersRatings []user.UserRating, err error) {
+	skip := page * limit
+
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	// pipeline := make([]bson.M, 0)
+	// groupStage := bson.M{
+	// 	"$group": bson.M{
+	// 		"_id":        "$user_id",
+	// 		"count_game": bson.M{"$sum": 1},
+	// 	},
+	// }
+
+	// pipeline = append(pipeline, groupStage)
+
+	// pipeline := []bson.M{
+	// 	{
+	// 		"$group": bson.M{
+	// 			"_id":         "$user_id",
+	// 			"count_games": bson.M{"$sum": 1},
+	// 		},
+	// 	},
+	// 	{
+	// 		"$limit": limit,
+	// 	},
+	// 	{
+	// 		"$skip": skip,
+	// 	},
+	// }
+
+	// id, _ := primitive.ObjectIDFromHex("60c0928d9bfeb2397e77124d")
+	// matchStage := bson.D{{"$match", bson.D{{"user_id", id}}}}
+
+	// skipStage := bson.D{{"$skip", skip}}
+	// limitStage := bson.D{{"$limit", limit}}
+	// groupStage := bson.D{{"$group", bson.D{{"_id", "$user_id"}, {"count_games", bson.D{{"$sum", 1}}}}}}
+	// sortStage := bson.D{{"$sort", bson.D{{"count_game", -1}}}}
+
+	cur, err := s.collection.Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"rating", -1}}).SetLimit(limit).SetSkip(skip))
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return usersRatings, apperror.ErrNotFound
+		}
+		return usersRatings, fmt.Errorf("failed to execute query. error: %w", err)
+	}
+
+	for cur.Next(ctx) {
+		var elem bson.M
+		err := cur.Decode(&elem)
+		if err != nil {
+			return usersRatings, fmt.Errorf("failed to decode document. error: %w", err)
+		}
+
+		userField := user.User{
+			UUID:      elem["_id"].(primitive.ObjectID),
+			Email:     elem["email"].(string),
+			LastName:  elem["last_name"].(string),
+			Country:   elem["country"].(string),
+			City:      elem["city"].(string),
+			Gender:    elem["gender"].(string),
+			BirthDate: elem["birth_date"].(primitive.DateTime),
+		}
+
+		userRating := user.UserRating{
+			User:   userField,
+			Rating: elem["rating"].(int64),
+		}
+		usersRatings = append(usersRatings, userRating)
+	}
+
+	return usersRatings, nil
+
 }

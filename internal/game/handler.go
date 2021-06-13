@@ -5,14 +5,15 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/IvanKyrylov/user-game-api/internal/apperror"
 )
 
 const (
-	gamesURL = "/api/games"
-	gameURL  = "/api/game/"
-	// gameByUserURL = "/api/games/user/"
+	gamesURL        = "/api/games"
+	gameURL         = "/api/game/"
+	gamesStatistics = "/api/games-statistics"
 )
 
 type Handler struct {
@@ -22,8 +23,8 @@ type Handler struct {
 
 func (h *Handler) Register(router *http.ServeMux) {
 	router.HandleFunc(gameURL, apperror.Middleware(h.GetGame))
-	// router.HandleFunc(gameByUserURL, apperror.Middleware(h.GetGamesByPlayer))
 	router.HandleFunc(gamesURL, apperror.Middleware(h.GetAllGames))
+	router.HandleFunc(gamesStatistics, apperror.Middleware(h.GetGamesStatistics))
 }
 
 func (h *Handler) GetGame(w http.ResponseWriter, r *http.Request) error {
@@ -108,13 +109,13 @@ func (h *Handler) GetAllGames(w http.ResponseWriter, r *http.Request) error {
 
 	h.Logger.Println("get limit from URL")
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil || limit <= 0 {
+	if err != nil || limit < 0 {
 		return apperror.BadRequestError("limit query parameter is required positive integers")
 	}
 
 	h.Logger.Println("get limit from URL")
 	page, err := strconv.Atoi(r.URL.Query().Get("page"))
-	if err != nil || page <= 0 {
+	if err != nil || page < 0 {
 		return apperror.BadRequestError("page query parameter is required positive integers")
 	}
 
@@ -130,6 +131,60 @@ func (h *Handler) GetAllGames(w http.ResponseWriter, r *http.Request) error {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(gamesBytes)
+
+	return nil
+}
+
+func (h *Handler) GetGamesStatistics(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return apperror.BadRequestError("metod GET")
+	}
+
+	h.Logger.Println("get user id from URL")
+	userId := r.URL.Query().Get("userId")
+	if len(userId) < 0 {
+		return apperror.BadRequestError("userId null")
+	}
+
+	h.Logger.Println("get start date from URL")
+	startDate := r.URL.Query().Get("startDate")
+	if len(startDate) < 0 {
+		return apperror.BadRequestError("startDate null")
+	}
+	h.Logger.Println("get end date from URL")
+	endDate := r.URL.Query().Get("endDate")
+	if len(endDate) < 0 {
+		return apperror.BadRequestError("endDate NULL")
+	}
+
+	dateLayout := "2-1-2006"
+
+	parsedStartDate, err := time.Parse(dateLayout, startDate)
+	if err != nil {
+		return apperror.BadRequestError("Invalid startDate format, please use dd-mm-yyyy format")
+	}
+
+	parsedEndDate, err := time.Parse(dateLayout, endDate)
+	if err != nil {
+		return apperror.BadRequestError("Invalid endDate format, please use dd-mm-yyyy format")
+	}
+
+	if parsedStartDate.After(parsedEndDate) {
+		return apperror.BadRequestError("startDate should not be after endDate")
+	}
+
+	data, err := h.GameService.GetGamesStatistics(r.Context(), userId, parsedStartDate, parsedEndDate)
+	if err != nil {
+		return err
+	}
+
+	dataBytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(dataBytes)
 
 	return nil
 }

@@ -43,6 +43,7 @@ func main() {
 
 	// mongo.Migrate(mongoClient, logger)
 
+	// if false {
 	userStorage := userdb.NewStorage(mongoClient, cfg.MongoDB.CollectionUsers, logger)
 	gameStorage := gamedb.NewStorage(mongoClient, cfg.MongoDB.CollectionUserGames, logger)
 
@@ -56,7 +57,7 @@ func main() {
 		panic(err)
 	}
 
-	gameService, err := game.NewService(gameStorage, logger)
+	gameService, err := game.NewService(gameStorage, userService, logger)
 
 	if err != nil {
 		panic(err)
@@ -76,6 +77,7 @@ func main() {
 
 	logger.Println("Start application")
 	start(router, logger, cfg)
+	// }
 }
 
 func start(router http.Handler, logger *log.Logger, cfg *config.Config) {
