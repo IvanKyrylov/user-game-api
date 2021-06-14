@@ -43,7 +43,6 @@ func main() {
 
 	// mongo.Migrate(mongoClient, logger)
 
-	// if false {
 	userStorage := userdb.NewStorage(mongoClient, cfg.MongoDB.CollectionUsers, logger)
 	gameStorage := gamedb.NewStorage(mongoClient, cfg.MongoDB.CollectionUserGames, logger)
 
@@ -77,7 +76,6 @@ func main() {
 
 	logger.Println("Start application")
 	start(router, logger, cfg)
-	// }
 }
 
 func start(router http.Handler, logger *log.Logger, cfg *config.Config) {
@@ -98,11 +96,14 @@ func start(router http.Handler, logger *log.Logger, cfg *config.Config) {
 			logger.Fatal(err)
 		}
 	} else {
-		logger.Printf("bind application to host: %s and port: %s", cfg.Listen.BindIP, cfg.Listen.Port)
+		// logger.Printf("bind application to host: %s and port: %s", cfg.Listen.BindIP, cfg.Listen.Port)
+		logger.Printf("bind application to host: %s and port: %s", "", os.Getenv("PORT"))
 
 		var err error
 
-		listener, err = net.Listen("tcp", fmt.Sprintf("%s:%s", cfg.Listen.BindIP, cfg.Listen.Port))
+		// listener, err = net.Listen("tcp", fmt.Sprintf("%s:%s", cfg.Listen.BindIP, cfg.Listen.Port))
+		listener, err = net.Listen("tcp", fmt.Sprintf("%s:%s", "", os.Getenv("PORT")))
+
 		if err != nil {
 			logger.Fatal(err)
 		}

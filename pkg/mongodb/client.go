@@ -3,6 +3,7 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,16 +11,17 @@ import (
 )
 
 func NewClient(ctx context.Context, host, port, username, password, database, authSource string) (*mongo.Database, error) {
-	mongoDBURL := fmt.Sprintf("mongodb://%s:%s@%s:%s", username, password, host, port)
-	credentials := options.Credential{
-		AuthSource:  authSource,
-		Username:    username,
-		Password:    password,
-		PasswordSet: true,
-	}
+	// mongoDBURL := fmt.Sprintf("mongodb://%s:%s@%s:%s", username, password, host, port)
+	// credentials := options.Credential{
+	// 	AuthSource:  authSource,
+	// 	Username:    username,
+	// 	Password:    password,
+	// 	PasswordSet: true,
+	// }
 	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(reqCtx, options.Client().ApplyURI(mongoDBURL).SetAuth(credentials))
+	client, err := mongo.Connect(reqCtx, options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
+	// .SetAuth(credentials))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create client to mongodb due to error %w", err)
 	}
