@@ -50,37 +50,37 @@ MongoDb.
 
 ## Описание 
 
-# UserAPI
+### UserAPI
 Получение списка пользователей (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/users?limit={field limit}&page={page number}`
 
-Получение даних о пользователе по id пользователя - `{UUID}` :
+Получение даных о пользователе по id пользователя - `{UUID}` :
 `https://radiant-savannah-32971.herokuapp.com/api/user/{UUID}`
 
-Получение рейтинга пользователей (статистика по всем сыграним играм), вся информация про пользователя и значение рейтинга с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
+Получение рейтинга пользователей (статистика по всем играм), вся информация про пользователя и значение рейтинга с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit={field limit}&page={page number}`
 
-# GameAPI
+### GameAPI
 Получение списка игр (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/games?limit={field limit}&page={page number}`
 
-Получение даних о пользователе по id игры - `{ID}`:
+Получение даных о пользователе по id игры - `{ID}`:
 `https://radiant-savannah-32971.herokuapp.com/api/user/{ID}`
 
-Получение статистики сгруппированную по номерам игр и дням. `{UUID}`- id игрока, групировка c`{start date}` - стартовая дата групировки, по `end date` - последняя дата групировки:
+Получение статистики сгруппированную по номерам игр и дням. `{UUID}`- id игрока, c`{start date}` - стартовая дата группировки, по `end date` - последняя дата группировки:
 `https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId={UUID}&startDate={start date}&endDate={end date}`
 
 
 ## Url для теста(проверки)
 
-# UserAPI
-Список пользлователей: https://radiant-savannah-32971.herokuapp.com/api/users?limit=10&page=0
+### UserAPI
+Список пользователей: https://radiant-savannah-32971.herokuapp.com/api/users?limit=10&page=0
 Информация о пользователе: https://radiant-savannah-32971.herokuapp.com/api/user/60c60346a3807b4fba91fa09
 Рейтинг пользователей: https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit=1000&page=0
 
-# GameAPI
+### GameAPI
 Список игр: https://radiant-savannah-32971.herokuapp.com/api/games?limit=1000&page=0
-Информация о играх: https://radiant-savannah-32971.herokuapp.com/api/game/60c6034ba3807b4fba9380a9
+Информация об играх: https://radiant-savannah-32971.herokuapp.com/api/game/60c6034ba3807b4fba9380a9
 Статистики сгруппированную по номерам игр и дням: https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId=60c60346a3807b4fba91fa09&startDate=23-02-2019&endDate=04-03-2019
 
 
