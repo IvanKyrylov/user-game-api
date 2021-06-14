@@ -56,7 +56,7 @@ func main() {
 		panic(err)
 	}
 
-	gameService, err := game.NewService(gameStorage, userService, logger)
+	gameService, err := game.NewService(gameStorage, logger)
 
 	if err != nil {
 		panic(err)

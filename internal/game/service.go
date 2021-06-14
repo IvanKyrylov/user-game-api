@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/IvanKyrylov/user-game-api/internal/apperror"
-	"github.com/IvanKyrylov/user-game-api/internal/user"
 )
 
 var _ Service = &service{}
@@ -21,16 +20,14 @@ type Service interface {
 }
 
 type service struct {
-	storage     Storage
-	logger      *log.Logger
-	userService user.Service
+	storage Storage
+	logger  *log.Logger
 }
 
-func NewService(storage Storage, userService user.Service, logger *log.Logger) (Service, error) {
+func NewService(storage Storage, logger *log.Logger) (Service, error) {
 	return &service{
-		storage:     storage,
-		logger:      logger,
-		userService: userService,
+		storage: storage,
+		logger:  logger,
 	}, nil
 }
 
