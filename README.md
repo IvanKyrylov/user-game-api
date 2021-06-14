@@ -50,7 +50,7 @@ MongoDb.
 
 ## Описание 
 
-#UserAPI
+# UserAPI
 Получение списка пользователей (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/users?limit={field limit}&page={page number}`
 
@@ -60,7 +60,7 @@ MongoDb.
 Получение рейтинга пользователей (статистика по всем сыграним играм), вся информация про пользователя и значение рейтинга с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit={field limit}&page={page number}`
 
-#GameAPI
+# GameAPI
 Получение списка игр (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
 `https://radiant-savannah-32971.herokuapp.com/api/games?limit={field limit}&page={page number}`
 
@@ -73,12 +73,12 @@ MongoDb.
 
 ## Url для теста(проверки)
 
-#UserAPI
+# UserAPI
 Список пользлователей: https://radiant-savannah-32971.herokuapp.com/api/users?limit=10&page=0
 Информация о пользователе: https://radiant-savannah-32971.herokuapp.com/api/user/60c60346a3807b4fba91fa09
 Рейтинг пользователей: https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit=1000&page=0
 
-#GameAPI
+# GameAPI
 Список игр: https://radiant-savannah-32971.herokuapp.com/api/games?limit=1000&page=0
 Информация о играх: https://radiant-savannah-32971.herokuapp.com/api/game/60c6034ba3807b4fba9380a9
 Статистики сгруппированную по номерам игр и дням: https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId=60c60346a3807b4fba91fa09&startDate=23-02-2019&endDate=04-03-2019
