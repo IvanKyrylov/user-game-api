@@ -90,8 +90,3 @@ MongoDb.
 Информация об играх: https://radiant-savannah-32971.herokuapp.com/api/game/60c6034ba3807b4fba9380a9
 
 Статистики сгруппированную по номерам игр и дням: https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId=60c60346a3807b4fba91fa09&startDate=23-02-2019&endDate=04-03-2019
-
-
-# Эпитафия
-Извиняюсь что без Docker или make файлов, за ужасный код, отсутствие комментариев, отвратительную архитектуру, за readme на славянском. Но могу пока что, только так. Спасибо за внимание. Слава Омниссии!
-
