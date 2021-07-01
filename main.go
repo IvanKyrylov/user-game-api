@@ -23,6 +23,7 @@ import (
 	mongo "github.com/IvanKyrylov/user-game-api/pkg/mongodb"
 	"github.com/IvanKyrylov/user-game-api/pkg/shutdown"
 )
+//TEST
 // TEST DEV
 // TEST RLT-479
 func main() {
