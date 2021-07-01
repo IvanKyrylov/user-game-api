@@ -23,7 +23,7 @@ import (
 	mongo "github.com/IvanKyrylov/user-game-api/pkg/mongodb"
 	"github.com/IvanKyrylov/user-game-api/pkg/shutdown"
 )
-
+// TEST DEV
 func main() {
 	logger := logging.Init()
 	logging.CommonLog.Println("logger init")
