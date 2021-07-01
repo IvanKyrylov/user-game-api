@@ -24,6 +24,7 @@ import (
 	"github.com/IvanKyrylov/user-game-api/pkg/shutdown"
 )
 // TEST DEV
+// TEST RLT-479
 func main() {
 	logger := logging.Init()
 	logging.CommonLog.Println("logger init")
