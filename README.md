@@ -70,23 +70,3 @@ MongoDb.
 Получение статистики сгруппированную по номерам игр и дням. `{UUID}`- id игрока, c`{start date}` - стартовая дата группировки, по `end date` - последняя дата группировки:
 `https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId={UUID}&startDate={start date}&endDate={end date}`
 
-
-
-## Url для теста(проверки)
-
-### UserAPI
-
-Список пользователей: https://radiant-savannah-32971.herokuapp.com/api/users?limit=10&page=0
-
-Информация о пользователе: https://radiant-savannah-32971.herokuapp.com/api/user/60c60346a3807b4fba91fa09
-
-Рейтинг пользователей: https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit=1000&page=0
-
-
-### GameAPI
-
-Список игр: https://radiant-savannah-32971.herokuapp.com/api/games?limit=1000&page=0
-
-Информация об играх: https://radiant-savannah-32971.herokuapp.com/api/game/60c6034ba3807b4fba9380a9
-
-Статистики сгруппированную по номерам игр и дням: https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId=60c60346a3807b4fba91fa09&startDate=23-02-2019&endDate=04-03-2019
