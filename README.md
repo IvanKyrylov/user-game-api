@@ -52,21 +52,21 @@ MongoDb.
 
 ### UserAPI
 Получение списка пользователей (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
-`https://radiant-savannah-32971.herokuapp.com/api/users?limit={field limit}&page={page number}`
+`https://localhost/api/users?limit={field limit}&page={page number}`
 
 Получение даных о пользователе по id пользователя - `{UUID}` :
-`https://radiant-savannah-32971.herokuapp.com/api/user/{UUID}`
+`https://localhost/api/user/{UUID}`
 
 Получение рейтинга пользователей (статистика по всем играм), вся информация про пользователя и значение рейтинга с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
-`https://radiant-savannah-32971.herokuapp.com/api/users-rating?limit={field limit}&page={page number}`
+`https://localhost/api/users-rating?limit={field limit}&page={page number}`
 
 ### GameAPI
 Получение списка игр (вся информация из таблицы) с ограничителем `{field limit}`- количество записей и `{page number}`- номер страницы:
-`https://radiant-savannah-32971.herokuapp.com/api/games?limit={field limit}&page={page number}`
+`https://localhost/api/games?limit={field limit}&page={page number}`
 
 Получение даных о пользователе по id игры - `{ID}`:
-`https://radiant-savannah-32971.herokuapp.com/api/user/{ID}`
+`https://localhost/api/user/{ID}`
 
 Получение статистики сгруппированную по номерам игр и дням. `{UUID}`- id игрока, c`{start date}` - стартовая дата группировки, по `end date` - последняя дата группировки:
-`https://radiant-savannah-32971.herokuapp.com/api/games-statistics?userId={UUID}&startDate={start date}&endDate={end date}`
+`https://localhost/api/games-statistics?userId={UUID}&startDate={start date}&endDate={end date}`
 
